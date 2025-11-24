@@ -75,13 +75,13 @@ buffer:
       # 数据格式配置
       format:
         prompt_key: 'query'       # 问题字段名
-        response_key: 'annotated_plan'      # 答案字段名
+        response_key: 'plan'      # 答案字段名
 
 
       
       # Workflow参数（传递给workflow的配置）
       workflow_args:
-        max_iters: 1               # 最大交互轮数
+        max_iters: 2               # 最大交互轮数
         similarity_model_name: "all-MiniLM-L6-v2"
         total_tools: 6
                                      
@@ -103,7 +103,7 @@ buffer:
       
       format:
         prompt_key: 'query'
-        response_key: 'annotated_plan'
+        response_key: 'plan'
       
       enable_progress_bar: false
       
