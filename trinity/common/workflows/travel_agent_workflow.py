@@ -936,7 +936,7 @@ class TravelAgentWorkflow(Workflow):
         
         try:
             prompt = SEMANTIC_JUDGE_PROMPT.format(
-                user_query=self.question,
+                user_query=self.query,
                 agent_plan=response_text
             )
             self.logger.info("调用评判模型进行语义质量评估")
@@ -950,7 +950,7 @@ class TravelAgentWorkflow(Workflow):
     async def _call_judge_model(self, prompt: str) -> float:
         """调用评判模型并解析分数"""
         try:
-            response = self.judge_model.chat.completions.create(
+            response = await self.judge_model.chat.completions.create(
                 model=getattr(self.judge_model, 'model_path', 'default'),
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.3,
@@ -1000,7 +1000,7 @@ class TravelAgentWorkflow(Workflow):
             self.logger.info("相似度模型不可用，返回默认值: 0.5")
             return 0.5
         
-        ground_truth = self.raw_task.get("annotated_plan")
+        ground_truth = self.answer
         if not ground_truth:
             self.logger.info("标准答案不存在，返回默认值: 0.5")
             return 0.5
