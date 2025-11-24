@@ -750,37 +750,6 @@ class TravelAgentWorkflow(Workflow):
         self.max_iters = task.workflow_args.get("max_iters", 1)
 
         self.total_tools = task.workflow_args.get("total_tools", 6)
-
-
-        self.agent = TravelAgent(self.agent_model, OpenAIChatFormatter(), self.max_iters)
-
-
-       
-
- 
-    # Workflow 核心方法
-    # ========================================================================
-
-    @property
-    def resettable(self):
-        """是否可重置"""
-        return False
-
-    # def reset(self, task: Task):
-    #     """重置工作流状态"""
-    #     self.raw_task = task.raw_task
-    #     self.question = task.raw_task.get("query", "")
-    #     self.workflow_args = task.workflow_args
-        
-    #     # 初始化奖励计算器配置
-    #     self._init_reward_configs()
-
-    def _init_reward_configs(self):
-        """初始化奖励计算器的配置参数"""
-        # 1. 任务完成配置
-        
-        self.max_iters =  self.workflow_args.get("max_iters", 10)
-        
         # 2. 语义评估配置（辅助模型）
         self.judge_model = None
         if hasattr(self, 'auxiliary_models') and self.auxiliary_models:
@@ -788,18 +757,19 @@ class TravelAgentWorkflow(Workflow):
         
         # 3. 相似度计算配置
         if not hasattr(self, 'similarity_model') or self.similarity_model is None:
-            similarity_model_name = self.workflow_args.get("similarity_model_name", "all-MiniLM-L6-v2")
+            similarity_model_name = task.workflow_args.get("similarity_model_name", "all-MiniLM-L6-v2")
             try:
                 self.similarity_model = SentenceTransformer(similarity_model_name)
 
             except Exception as e:
-
                 self.similarity_model = None
-        
-        # 4. 工具使用配置
-        self.total_tools = 6  # 6个工具
-    
- 
+
+
+        self.agent = TravelAgent(self.agent_model, OpenAIChatFormatter(), self.max_iters)
+
+
+
+   
 
     async def run_async(self) -> List[Experience]:
         """
@@ -891,6 +861,8 @@ class TravelAgentWorkflow(Workflow):
             self._format_reward(response_text),
             return_exceptions=True
         )
+
+         
         
         # 解包结果并处理异常
         completion_reward = self._handle_result(results[0], "completion", 0.0)
@@ -929,6 +901,7 @@ class TravelAgentWorkflow(Workflow):
     def _handle_result(self, result, reward_name: str, default_value: float) -> float:
         """处理并行执行的奖励函数结果"""
         if isinstance(result, Exception):
+            self.logger.info(Exception)
         
             return default_value
         return float(result)
