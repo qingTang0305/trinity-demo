@@ -1,0 +1,1 @@
+trinity debug --config /home/ecs-user/Trinity-RFT/demo-script/train.yaml --module workflow --output-file /home/ecs-user/debug.json

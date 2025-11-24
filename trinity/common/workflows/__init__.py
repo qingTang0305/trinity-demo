@@ -51,8 +51,13 @@ from trinity.common.workflows.simple_mm_workflow import (
     AsyncSimpleMMWorkflow,
     SimpleMMWorkflow,
 )
-from trinity.common.workflows.workflow import (
-    WORKFLOWS,
+
+from trinity.common.workflows.travel_agent_workflow import (
+  TravelAgentWorkflow
+)
+
+
+from trinity.common.workflows.workflow import (    WORKFLOWS,
     AsyncMathWorkflow,
     AsyncSimpleWorkflow,
     MathWorkflow,
@@ -94,4 +99,6 @@ __all__ = [
     "SimpleMMWorkflow",
     "RubricJudgeWorkflow",
     "AgentScopeWorkflowAdapter",
+    "TravelAgentWorkflow"
+
 ]
