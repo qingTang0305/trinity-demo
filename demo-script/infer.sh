@@ -1,1 +1,1 @@
-trinity debug --config /home/ecs-user/Trinity-RFT/demo-script/train.yaml --module inference_model
+trinity debug --config /home/ecs-user/trinity-demo/demo-script/train.yaml --module inference_model

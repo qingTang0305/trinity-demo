@@ -1,1 +1,1 @@
-trinity run --config /home/ecs-user/Trinity-RFT/demo-script/train.yaml
+trinity run --config /home/ecs-user/trinity-demo/demo-script/train.yaml
